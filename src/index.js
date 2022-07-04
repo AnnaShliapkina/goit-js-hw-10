@@ -4,14 +4,17 @@ import { fetchCountries } from './js/fetchCountries';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const DEBOUNCE_DELAY = 300;
-const inpetEl = document.querySelector('#search-box');
-const countryList = document.querySelector('.country-list');
-const countryInfo = document.querySelector('.country-info');
 
-inpetEl.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
+const refs = {
+  searchInput: document.querySelector('#search-box'),
+  countryList: document.querySelector('.country-list'),
+  countryInfo: document.querySelector('.country-info'),
+};
 
-function onInput(evt) {
-  let value = evt.target.value.trim();
+refs.searchInput.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
+
+function onSearch(event) {
+  let value = event.target.value.trim();
 
   if (value != '') {
     fetchCountries(value)
@@ -20,42 +23,43 @@ function onInput(evt) {
           Notify.info(
             'Too many matches found. Please enter a more specific name.'
           );
-          countryInfo.innerHTML = '';
-          countryList.innerHTML = '';
+          resetSearch();
         }
 
         if (res.length >= 2 && res.length <= 10) {
-          countryList.innerHTML = murkUpList(res);
-          countryInfo.innerHTML = '';
+          resetSearch();
+          refs.countryList.innerHTML = murkUpList(res);
         }
 
         if (res.length > 0 && res.length < 2) {
-          countryInfo.innerHTML = murkUpCountry(res);
-          countryList.innerHTML = '';
+          resetSearch();
+          refs.countryInfo.innerHTML = murkUpCountry(res);
         }
       })
       .catch(error => {
-        // console.log(error);
-        countryList.innerHTML = '';
-        countryInfo.innerHTML = '';
+        resetSearch();
       });
   } else {
-    countryList.innerHTML = '';
-    countryInfo.innerHTML = '';
+    resetSearch();
   }
 }
 
-function murkUpList(array) {
-  return array
+function resetSearch() {
+  refs.countryList.innerHTML = '';
+  refs.countryInfo.innerHTML = '';
+}
+
+function murkUpList(list) {
+  return list
     .map(
-      el =>
-        `<li class="list-item"><img src="${el.flags.svg}" class="img" ></img><p>${el.name.official}</p></li>`
+      country =>
+        `<li class="list-item"><img src="${country.flags.svg}" class="img" ></img><p>${country.name.official}</p></li>`
     )
     .join('');
 }
 
-function murkUpCountry(argCountry) {
-  const [country] = argCountry;
+function murkUpCountry(info) {
+  const [country] = info;
   const { name, population, flags, capital, languages } = country;
   const langArray = Object.values(languages);
 
