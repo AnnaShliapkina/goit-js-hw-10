@@ -68,9 +68,9 @@ function murkUpCountry(info) {
   return `<div class="wrapper"><img src="${flags.svg}" class="img"></img>
           <h2>${name.official}</h2></div>
     <ul class="country-list">
-      <li class="list-item"><p><b>Capital: </b>${capital}</p></li>
-      <li class="list-item"><p><b>Population: </b>${population}</p></li>
-      <li class="list-item"><p><b>Languages: </b>${langArray.join(
+      <li class="list-item"><span class="list-item_bold><і>Capital: </span class="list-item_bold>${capital}</p></li>
+      <li class="list-item"><span class="list-item_bold><і>Population: </span class="list-item_bold>${population}</p></li>
+      <li class="list-item"><span class="list-item_bold><і>Languages: </span class="list-item_bold>${langArray.join(
         ', '
       )}</p></li>
     </ul>`;

@@ -46,3 +46,7 @@ body {
   gap: 15px;
   align-items: center;
 }
+
+.list-item_bold {
+  font-weight: bold;
+}
