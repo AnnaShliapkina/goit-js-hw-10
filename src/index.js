@@ -41,6 +41,8 @@ function onSearch(event) {
       });
   } else {
     resetSearch();
+    // NEW
+    return Notiflix.Notify.warning('Search query is empty!');
   }
 }
 
