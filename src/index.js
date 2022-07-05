@@ -28,12 +28,12 @@ function onSearch(event) {
 
         if (res.length >= 2 && res.length <= 10) {
           resetSearch();
-          refs.countryList.innerHTML = murkUpList(res);
+          refs.countryList.innerHTML = markUpList(res);
         }
 
         if (res.length > 0 && res.length < 2) {
           resetSearch();
-          refs.countryInfo.innerHTML = murkUpCountry(res);
+          refs.countryInfo.innerHTML = markUpCountry(res);
         }
       })
       .catch(error => {
@@ -41,8 +41,7 @@ function onSearch(event) {
       });
   } else {
     resetSearch();
-    // NEW
-    return Notiflix.Notify.warning('Search query is empty!');
+    return Notify.warning('Search query is empty!');
   }
 }
 
@@ -51,26 +50,26 @@ function resetSearch() {
   refs.countryInfo.innerHTML = '';
 }
 
-function murkUpList(list) {
+function markUpList(list) {
   return list
     .map(
       country =>
-        `<li class="list-item"><img src="${country.flags.svg}" class="img" ></img><p>${country.name.official}</p></li>`
+        `<li class="country-item"><img src="${country.flags.svg}" class="img" ></img><p>${country.name.official}</p></li>`
     )
     .join('');
 }
 
-function murkUpCountry(info) {
+function markUpCountry(info) {
   const [country] = info;
   const { name, population, flags, capital, languages } = country;
   const langArray = Object.values(languages);
 
-  return `<div class="wrapper"><img src="${flags.svg}" class="img"></img>
+  return `<div class="box"><img src="${flags.svg}" class="img"></img>
           <h2>${name.official}</h2></div>
     <ul class="country-list">
-      <li class="list-item"><span class="list-item_bold><і>Capital: </span class="list-item_bold>${capital}</p></li>
-      <li class="list-item"><span class="list-item_bold><і>Population: </span class="list-item_bold>${population}</p></li>
-      <li class="list-item"><span class="list-item_bold><і>Languages: </span class="list-item_bold>${langArray.join(
+      <li class="country-item country-item__box"><p><b>Capital: </b>${capital}</p></li>
+      <li class="country-item country-item__box"><p><b>Population: </b>${population}</p></li>
+      <li class="country-item country-item__box"><p><b>Languages: </b>${langArray.join(
         ', '
       )}</p></li>
     </ul>`;
